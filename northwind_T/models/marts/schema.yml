@@ -1,0 +1,280 @@
+version: 2
+models:
+- name: dim_customers
+  description: Northwind dim_customers for the required data mart.
+  columns:
+  - name: customer_pk
+    description: Primary surrogate key.
+    data_tests:
+    - unique
+    - not_null
+  - name: customer_id
+    description: Customer id.
+  - name: company_name
+    description: Company name.
+  - name: contact_name
+    description: Contact name.
+  - name: contact_title
+    description: Contact title.
+  - name: address
+    description: Address.
+  - name: city
+    description: City.
+  - name: region
+    description: Region.
+  - name: postal_code
+    description: Postal code.
+  - name: country
+    description: Country.
+  - name: phone
+    description: Phone.
+  - name: fax
+    description: Fax.
+  - name: first_order_date
+    description: Earliest order timestamp for the customer.
+  - name: customer_full_address
+    description: Address, city, region and country.
+- name: dim_employees
+  description: Northwind dim_employees for the required data mart.
+  columns:
+  - name: employee_pk
+    description: Primary surrogate key.
+    data_tests:
+    - unique
+    - not_null
+  - name: employee_id
+    description: Employee id.
+  - name: last_name
+    description: Last name.
+  - name: first_name
+    description: First name.
+  - name: title
+    description: Title.
+  - name: title_of_courtesy
+    description: Title of courtesy.
+  - name: birth_date
+    description: Birth date.
+  - name: hire_date
+    description: Hire date.
+  - name: address
+    description: Address.
+  - name: city
+    description: City.
+  - name: region
+    description: Region.
+  - name: postal_code
+    description: Postal code.
+  - name: country
+    description: Country.
+  - name: home_phone
+    description: Home phone.
+  - name: extension
+    description: Extension.
+  - name: notes
+    description: Notes.
+  - name: reports_to
+    description: Reports to.
+  - name: photo_path
+    description: Photo path.
+  - name: employee_full_name
+    description: First name followed by last name.
+- name: dim_products
+  description: Northwind dim_products for the required data mart.
+  columns:
+  - name: product_pk
+    description: Primary surrogate key.
+    data_tests:
+    - unique
+    - not_null
+  - name: product_id
+    description: Product id.
+  - name: product_name
+    description: Product name.
+  - name: supplier_id
+    description: Supplier id.
+    data_tests:
+    - not_null
+    - relationships:
+        arguments:
+          to: ref('dim_suppliers')
+          field: supplier_id
+  - name: category_id
+    description: Category id.
+    data_tests:
+    - not_null
+    - relationships:
+        arguments:
+          to: ref('dim_categories')
+          field: category_id
+  - name: quantity_per_unit
+    description: Quantity per unit.
+  - name: unit_price
+    description: Unit price.
+  - name: units_in_stock
+    description: Units in stock.
+  - name: units_on_order
+    description: Units on order.
+  - name: reorder_level
+    description: Reorder level.
+  - name: discontinued
+    description: Discontinued.
+  - name: category_name
+    description: Related product category name.
+  - name: supplier_name
+    description: Related supplier company name.
+- name: dim_suppliers
+  description: Northwind dim_suppliers for the required data mart.
+  columns:
+  - name: supplier_pk
+    description: Primary surrogate key.
+    data_tests:
+    - unique
+    - not_null
+  - name: supplier_id
+    description: Supplier id.
+  - name: company_name
+    description: Company name.
+  - name: contact_name
+    description: Contact name.
+  - name: contact_title
+    description: Contact title.
+  - name: address
+    description: Address.
+  - name: city
+    description: City.
+  - name: region
+    description: Region.
+  - name: postal_code
+    description: Postal code.
+  - name: country
+    description: Country.
+  - name: phone
+    description: Phone.
+  - name: fax
+    description: Fax.
+  - name: home_page
+    description: Home page.
+- name: dim_categories
+  description: Northwind dim_categories for the required data mart.
+  columns:
+  - name: category_pk
+    description: Primary surrogate key.
+    data_tests:
+    - unique
+    - not_null
+  - name: category_id
+    description: Category id.
+  - name: category_name
+    description: Category name.
+  - name: description
+    description: Description.
+- name: fct_orders
+  description: Northwind fct_orders for the required data mart.
+  columns:
+  - name: order_pk
+    description: One row per order.
+    data_tests:
+    - unique
+    - not_null
+  - name: customer_pk
+    description: Customer dimension key.
+    data_tests:
+    - not_null
+    - relationships:
+        arguments:
+          to: ref('dim_customers')
+          field: customer_pk
+  - name: employee_pk
+    description: Employee dimension key.
+    data_tests:
+    - not_null
+    - relationships:
+        arguments:
+          to: ref('dim_employees')
+          field: employee_pk
+  - name: total_order_value
+    description: Sum of all discounted order-line amounts.
+    data_tests:
+    - not_null
+  - name: order_status_flag
+    description: Shipping status from the shipped timestamp.
+    data_tests:
+    - accepted_values:
+        arguments:
+          values:
+          - Shipped
+          - Pending
+          - Cancelled
+  - name: shipping_delay_days
+    description: Elapsed days between ordered and shipped timestamps; NULL if not
+      shipped.
+- name: fct_order_details
+  description: Northwind fct_order_details for the required data mart.
+  columns:
+  - name: order_detail_pk
+    description: One row per unique order/product pair.
+    data_tests:
+    - unique
+    - not_null
+  - name: order_pk
+    description: Order pk.
+    data_tests:
+    - not_null
+    - relationships:
+        arguments:
+          to: ref('fct_orders')
+          field: order_pk
+  - name: product_pk
+    description: Product pk.
+    data_tests:
+    - not_null
+    - relationships:
+        arguments:
+          to: ref('dim_products')
+          field: product_pk
+  - name: customer_pk
+    description: Customer pk.
+    data_tests:
+    - not_null
+    - relationships:
+        arguments:
+          to: ref('dim_customers')
+          field: customer_pk
+  - name: employee_pk
+    description: Employee pk.
+    data_tests:
+    - not_null
+    - relationships:
+        arguments:
+          to: ref('dim_employees')
+          field: employee_pk
+  - name: order_id
+    description: Order id.
+  - name: product_id
+    description: Product id.
+  - name: unit_price
+    description: Unit price.
+    data_tests:
+    - not_null
+  - name: quantity
+    description: Quantity.
+    data_tests:
+    - not_null
+  - name: discount
+    description: Discount.
+    data_tests:
+    - not_null
+  - name: extended_price
+    description: Extended price.
+    data_tests:
+    - not_null
+  - name: order_date
+    description: Order date.
+    data_tests:
+    - not_null
+  - name: required_date
+    description: Required date.
+  - name: shipped_date
+    description: Shipped date.
+  - name: shipping_delay_days
+    description: Shipping delay days.

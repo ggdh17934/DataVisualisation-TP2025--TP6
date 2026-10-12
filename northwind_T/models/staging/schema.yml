@@ -1,0 +1,269 @@
+version: 2
+sources:
+- name: staging_dlt
+  schema: staging
+  tables:
+  - name: customers
+  - name: orders
+  - name: employees
+  - name: products
+  - name: suppliers
+  - name: categories
+  - name: order_details
+models:
+- name: stg_customers
+  description: Cleaned and typed Northwind customers records.
+  columns:
+  - name: customer_pk
+    description: Stable surrogate key for this record.
+    data_tests:
+    - unique
+    - not_null
+  - name: customer_id
+    description: Customer id, from the original Northwind source.
+    data_tests:
+    - unique
+    - not_null
+  - name: company_name
+    description: Company name, from the original Northwind source.
+  - name: contact_name
+    description: Contact name, from the original Northwind source.
+  - name: contact_title
+    description: Contact title, from the original Northwind source.
+  - name: address
+    description: Address, from the original Northwind source.
+  - name: city
+    description: City, from the original Northwind source.
+  - name: region
+    description: Region, from the original Northwind source.
+  - name: postal_code
+    description: Postal code, from the original Northwind source.
+  - name: country
+    description: Country, from the original Northwind source.
+  - name: phone
+    description: Phone, from the original Northwind source.
+  - name: fax
+    description: Fax, from the original Northwind source.
+- name: stg_orders
+  description: Cleaned and typed Northwind orders records.
+  columns:
+  - name: order_pk
+    description: Stable surrogate key for this record.
+    data_tests:
+    - unique
+    - not_null
+  - name: order_id
+    description: Order id, from the original Northwind source.
+    data_tests:
+    - unique
+    - not_null
+  - name: customer_id
+    description: Customer id, from the original Northwind source.
+    data_tests:
+    - not_null
+    - relationships:
+        arguments:
+          to: ref('stg_customers')
+          field: customer_id
+  - name: employee_id
+    description: Employee id, from the original Northwind source.
+    data_tests:
+    - not_null
+    - relationships:
+        arguments:
+          to: ref('stg_employees')
+          field: employee_id
+  - name: order_date
+    description: Order date, from the original Northwind source.
+    data_tests:
+    - not_null
+  - name: required_date
+    description: Required date, from the original Northwind source.
+  - name: shipped_date
+    description: Shipped date, from the original Northwind source.
+  - name: ship_via
+    description: Ship via, from the original Northwind source.
+  - name: freight
+    description: Freight, from the original Northwind source.
+  - name: ship_name
+    description: Ship name, from the original Northwind source.
+  - name: ship_address
+    description: Ship address, from the original Northwind source.
+  - name: ship_city
+    description: Ship city, from the original Northwind source.
+  - name: ship_region
+    description: Ship region, from the original Northwind source.
+  - name: ship_postal_code
+    description: Ship postal code, from the original Northwind source.
+  - name: ship_country
+    description: Ship country, from the original Northwind source.
+- name: stg_employees
+  description: Cleaned and typed Northwind employees records.
+  columns:
+  - name: employee_pk
+    description: Stable surrogate key for this record.
+    data_tests:
+    - unique
+    - not_null
+  - name: employee_id
+    description: Employee id, from the original Northwind source.
+    data_tests:
+    - unique
+    - not_null
+  - name: last_name
+    description: Last name, from the original Northwind source.
+  - name: first_name
+    description: First name, from the original Northwind source.
+  - name: title
+    description: Title, from the original Northwind source.
+  - name: title_of_courtesy
+    description: Title of courtesy, from the original Northwind source.
+  - name: birth_date
+    description: Birth date, from the original Northwind source.
+  - name: hire_date
+    description: Hire date, from the original Northwind source.
+  - name: address
+    description: Address, from the original Northwind source.
+  - name: city
+    description: City, from the original Northwind source.
+  - name: region
+    description: Region, from the original Northwind source.
+  - name: postal_code
+    description: Postal code, from the original Northwind source.
+  - name: country
+    description: Country, from the original Northwind source.
+  - name: home_phone
+    description: Home phone, from the original Northwind source.
+  - name: extension
+    description: Extension, from the original Northwind source.
+  - name: notes
+    description: Notes, from the original Northwind source.
+  - name: reports_to
+    description: Reports to, from the original Northwind source.
+  - name: photo_path
+    description: Photo path, from the original Northwind source.
+- name: stg_products
+  description: Cleaned and typed Northwind products records.
+  columns:
+  - name: product_pk
+    description: Stable surrogate key for this record.
+    data_tests:
+    - unique
+    - not_null
+  - name: product_id
+    description: Product id, from the original Northwind source.
+    data_tests:
+    - unique
+    - not_null
+  - name: product_name
+    description: Product name, from the original Northwind source.
+  - name: supplier_id
+    description: Supplier id, from the original Northwind source.
+    data_tests:
+    - not_null
+    - relationships:
+        arguments:
+          to: ref('stg_suppliers')
+          field: supplier_id
+  - name: category_id
+    description: Category id, from the original Northwind source.
+    data_tests:
+    - not_null
+    - relationships:
+        arguments:
+          to: ref('stg_categories')
+          field: category_id
+  - name: quantity_per_unit
+    description: Quantity per unit, from the original Northwind source.
+  - name: unit_price
+    description: Unit price, from the original Northwind source.
+  - name: units_in_stock
+    description: Units in stock, from the original Northwind source.
+  - name: units_on_order
+    description: Units on order, from the original Northwind source.
+  - name: reorder_level
+    description: Reorder level, from the original Northwind source.
+  - name: discontinued
+    description: Discontinued, from the original Northwind source.
+- name: stg_suppliers
+  description: Cleaned and typed Northwind suppliers records.
+  columns:
+  - name: supplier_pk
+    description: Stable surrogate key for this record.
+    data_tests:
+    - unique
+    - not_null
+  - name: supplier_id
+    description: Supplier id, from the original Northwind source.
+    data_tests:
+    - unique
+    - not_null
+  - name: company_name
+    description: Company name, from the original Northwind source.
+  - name: contact_name
+    description: Contact name, from the original Northwind source.
+  - name: contact_title
+    description: Contact title, from the original Northwind source.
+  - name: address
+    description: Address, from the original Northwind source.
+  - name: city
+    description: City, from the original Northwind source.
+  - name: region
+    description: Region, from the original Northwind source.
+  - name: postal_code
+    description: Postal code, from the original Northwind source.
+  - name: country
+    description: Country, from the original Northwind source.
+  - name: phone
+    description: Phone, from the original Northwind source.
+  - name: fax
+    description: Fax, from the original Northwind source.
+  - name: home_page
+    description: Home page, from the original Northwind source.
+- name: stg_categories
+  description: Cleaned and typed Northwind categories records.
+  columns:
+  - name: category_pk
+    description: Stable surrogate key for this record.
+    data_tests:
+    - unique
+    - not_null
+  - name: category_id
+    description: Category id, from the original Northwind source.
+    data_tests:
+    - unique
+    - not_null
+  - name: category_name
+    description: Category name, from the original Northwind source.
+  - name: description
+    description: Description, from the original Northwind source.
+- name: stg_order_details
+  description: Cleaned and typed Northwind order_details records.
+  columns:
+  - name: order_detail_pk
+    description: Stable surrogate key for this record.
+    data_tests:
+    - unique
+    - not_null
+  - name: order_id
+    description: Order id, from the original Northwind source.
+    data_tests:
+    - not_null
+    - relationships:
+        arguments:
+          to: ref('stg_orders')
+          field: order_id
+  - name: product_id
+    description: Product id, from the original Northwind source.
+    data_tests:
+    - not_null
+    - relationships:
+        arguments:
+          to: ref('stg_products')
+          field: product_id
+  - name: unit_price
+    description: Unit price, from the original Northwind source.
+  - name: quantity
+    description: Quantity, from the original Northwind source.
+  - name: discount
+    description: Discount, from the original Northwind source.

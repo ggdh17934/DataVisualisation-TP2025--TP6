@@ -1,0 +1,20 @@
+select
+    {{ dbt_utils.generate_surrogate_key(['employee_id']) }} as employee_pk,
+    employee_id::bigint as employee_id,
+    last_name,
+    first_name,
+    title,
+    title_of_courtesy,
+    nullif(birth_date::text, '')::timestamp as birth_date,
+    nullif(hire_date::text, '')::timestamp as hire_date,
+    address,
+    city,
+    region,
+    postal_code,
+    country,
+    home_phone,
+    extension,
+    notes,
+    reports_to::bigint as reports_to,
+    photo_path
+from {{ source('staging_dlt', 'employees') }}

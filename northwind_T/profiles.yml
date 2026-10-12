@@ -1,0 +1,14 @@
+northwind_T:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: "{{ env_var('PGHOST') }}"
+      port: "{{ env_var('PGPORT') | int }}"
+      user: "{{ env_var('PGUSER') }}"
+      password: "{{ env_var('PGPASSWORD') }}"
+      dbname: "{{ env_var('PGDATABASE') }}"
+      sslmode: "{{ env_var('PGSSLMODE', 'require') }}"
+      schema: northwind_warehouse
+      threads: 2
+      connect_timeout: 30

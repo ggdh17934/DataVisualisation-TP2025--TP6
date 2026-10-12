@@ -1,0 +1,58 @@
+{
+  "source_counts": {
+    "customers": 93,
+    "orders": 16282,
+    "employees": 9,
+    "products": 77,
+    "categories": 8,
+    "suppliers": 29,
+    "order_details": 609283
+  },
+  "warehouse_counts": {
+    "staging.customers": 93,
+    "staging.orders": 16282,
+    "staging.employees": 9,
+    "staging.products": 77,
+    "staging.categories": 8,
+    "staging.suppliers": 29,
+    "staging.order_details": 609283,
+    "northwind_warehouse.dim_customers": 93,
+    "northwind_warehouse.dim_employees": 9,
+    "northwind_warehouse.dim_products": 77,
+    "northwind_warehouse.dim_suppliers": 29,
+    "northwind_warehouse.dim_categories": 8,
+    "northwind_warehouse.fct_orders": 16282,
+    "northwind_warehouse.fct_order_details": 609283
+  },
+  "total_revenue": 448386633.1695,
+  "total_orders": 16282,
+  "total_quantity": 15538602,
+  "detail_rows": 609283,
+  "average_order_value": 27538.793340468,
+  "dbt_commands": [
+    {
+      "command": "dbt deps",
+      "success": true
+    },
+    {
+      "command": "dbt debug",
+      "success": true
+    },
+    {
+      "command": "dbt run --select stg_customers stg_orders stg_employees stg_products stg_categories stg_suppliers stg_order_details",
+      "success": true
+    },
+    {
+      "command": "dbt test --select stg_customers stg_orders stg_employees stg_products stg_categories stg_suppliers stg_order_details",
+      "success": true
+    },
+    {
+      "command": "dbt run --select dim_customers dim_employees dim_products dim_suppliers dim_categories fct_orders fct_order_details",
+      "success": true
+    },
+    {
+      "command": "dbt test --select dim_customers dim_employees dim_products dim_suppliers dim_categories fct_orders fct_order_details",
+      "success": true
+    }
+  ]
+}

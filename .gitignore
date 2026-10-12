@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.venv/
+.env
+.secrets/
+.dlt-state/
+.dlt/secrets.toml
+northwind_T/target/
+northwind_T/logs/
+northwind_T/dbt_packages/
+northwind_T/.user.yml

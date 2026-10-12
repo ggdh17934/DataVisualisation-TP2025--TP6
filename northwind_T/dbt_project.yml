@@ -1,0 +1,13 @@
+name: northwind_T
+version: '1.0.0'
+config-version: 2
+profile: northwind_T
+model-paths: [models]
+flags:
+  send_anonymous_usage_stats: false
+models:
+  northwind_T:
+    staging:
+      +materialized: view
+    marts:
+      +materialized: table
